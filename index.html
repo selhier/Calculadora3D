@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora 3D & Conversión de Medidas</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #6b7280;
+      --background: #f9fafb;
+      --card-bg: #ffffff;
+      --text-color: #111827;
+      --accent: #10b981;
+      --radius: 0.5rem;
+      --shadow: rgba(0, 0, 0, 0.05);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: var(--background);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 2rem;
+      color: var(--primary);
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      max-width: 900px;
+      margin: auto;
+      padding: 0 1rem;
+    }
+    @media(min-width: 768px) {
+      .container { grid-template-columns: repeat(2, 1fr); }
+    }
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+    .card h2 {
+      margin-bottom: 1rem;
+      color: var(--secondary);
+      font-size: 1.25rem;
+    }
+    label {
+      margin-top: 0.75rem;
+      font-size: 0.95rem;
+      color: var(--secondary);
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.25rem;
+      border: 1px solid #d1d5db;
+      border-radius: var(--radius);
+      font-size: 1rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: var(--radius);
+      background-color: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      align-self: start;
+      transition: background-color 0.2s ease;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .result {
+      margin-top: 1rem;
+      background-color: #f3f4f6;
+      border-left: 4px solid var(--accent);
+      padding: 1rem;
+      border-radius: 0  var(--radius) var(--radius) 0;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calculadora de Costos 3D & Conversión</h1>
+  <div class="container">
+    <!-- Cálculo de costo -->
+    <div class="card">
+      <h2>Estimación de Costos</h2>
+      <label for="filamento">Filamento usado (g):
+        <input type="number" id="filamento" value="150">
+      </label>
+      <label for="costoFilamento">Costo del filamento por kg (RD$):
+        <input type="number" id="costoFilamento" value="2000">
+      </label>
+      <label for="potencia">Potencia de la impresora (W):
+        <input type="number" id="potencia" value="100">
+      </label>
+      <label for="horas">Tiempo impresión - Horas (h):
+        <input type="number" id="horas" value="0">
+      </label>
+      <label for="minutos">Tiempo impresión - Minutos (min):
+        <input type="number" id="minutos" value="30">
+      </label>
+      <label for="tarifa">Tarifa eléctrica (RD$/kWh):
+        <input type="number" id="tarifa" value="12.60" step="0.01">
+      </label>
+      <label for="costoMano">Costo mano de obra y post-proceso (RD$):
+        <input type="number" id="costoMano" value="150">
+      </label>
+      <label for="ganancia">Margen de ganancia (%):
+        <input type="number" id="ganancia" value="20">
+      </label>
+      <button onclick="calcularCosto()">Calcular Precio</button>
+      <div class="result" id="resultadoCosto"></div>
+    </div>
+
+    <!-- Conversión de medidas -->
+    <div class="card">
+      <h2>Conversor de Medidas</h2>
+      <label for="milimetros">Milímetros (mm):
+        <input type="number" id="milimetros" placeholder="Ej: 100">
+      </label>
+      <button onclick="convertirMedidas()">Convertir</button>
+      <div class="result" id="resultadoConversion"></div>
+    </div>
+  </div>
+
+  <script>
+    function calcularCosto() {
+      const filamento = +document.getElementById('filamento').value;
+      const costoFilamentoKg = +document.getElementById('costoFilamento').value;
+      const potencia = +document.getElementById('potencia').value;
+      const horas = +document.getElementById('horas').value;
+      const minutos = +document.getElementById('minutos').value;
+      const tarifa = +document.getElementById('tarifa').value;
+      const costoMano = +document.getElementById('costoMano').value;
+      const ganancia = +document.getElementById('ganancia').value;
+
+      const tiempoHoras = horas + minutos / 60;
+      const costoFilamento = (filamento / 1000) * costoFilamentoKg;
+      const consumoKWh = (potencia * tiempoHoras) / 1000;
+      const costoElectricidad = consumoKWh * tarifa;
+      const costoTotal = costoFilamento + costoElectricidad + costoMano;
+      const precioVenta = costoTotal * (1 + ganancia / 100);
+
+      document.getElementById('resultadoCosto').innerHTML = `
+        <p><strong>Filamento:</strong> RD$ ${costoFilamento.toFixed(2)}</p>
+        <p><strong>Electricidad:</strong> RD$ ${costoElectricidad.toFixed(2)}</p>
+        <p><strong>Mano de obra:</strong> RD$ ${costoMano.toFixed(2)}</p>
+        <p><strong>Costo total:</strong> RD$ ${costoTotal.toFixed(2)}</p>
+        <p><strong>Precio de venta (con ${ganancia}%):</strong> RD$ ${precioVenta.toFixed(2)}</p>
+      `;
+    }
+
+    function convertirMedidas() {
+      const mm = +document.getElementById('milimetros').value;
+      const cm = (mm / 10).toFixed(2);
+      const pulgadas = (mm / 25.4).toFixed(2);
+
+      document.getElementById('resultadoConversion').innerHTML = `
+        <p><strong>Centímetros:</strong> ${cm} cm</p>
+        <p><strong>Pulgadas:</strong> ${pulgadas} in</p>
+      `;
+    }
+  </script>
+</body>
+</html>
