@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora 3D & Conversión de Medidas</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <h1>Calculadora de Costos 3D & Conversión</h1>
+  <div class="container">
+    <div class="card">
+      <h2>Estimación de Costos</h2>
+      <label for="filamento">Filamento usado (g):
+        <input type="number" id="filamento" value="">
+      </label>
+      <label for="costoFilamento">Costo del filamento por kg (RD$):
+        <input type="number" id="costoFilamento" value="">
+      </label>
+      <label for="potencia">Potencia de la impresora (W):
+        <input type="number" id="potencia" value="60">
+      </label>
+      <label for="horas">Tiempo impresión - Horas (h):
+        <input type="number" id="horas" value="0">
+      </label>
+      <label for="minutos">Tiempo impresión - Minutos (min):
+        <input type="number" id="minutos" value="0">
+      </label>
+      <label for="tarifa">Tarifa eléctrica (RD$/kWh):
+        <input type="number" id="tarifa" value="12.60" step="0.01">
+      </label>
+      <label for="costoMano">Costo mano de obra y post-proceso (RD$):
+        <input type="number" id="costoMano" value="150">
+      </label>
+      <label for="ganancia">Margen de ganancia (%):
+        <input type="number" id="ganancia" value="20">
+      </label>
+      <button onclick="calcularCosto()">Calcular Precio</button>
+      <div class="result" id="resultadoCosto"></div>
+    </div>
+
+    <div class="card">
+      <h2>Conversor de Medidas</h2>
+      <label for="milimetros">Milímetros (mm):
+        <input type="number" id="milimetros" placeholder="Ej: 100">
+      </label>
+      <button onclick="convertirMedidas()">Convertir</button>
+      <div class="result" id="resultadoConversion"></div>
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
