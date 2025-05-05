@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Calculadora 3D & Conversión de Medidas</title>
   <link rel="manifest" href="./manifest.json">
   <meta name="theme-color" content="#4f46e5">
@@ -34,12 +34,14 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
-      max-width: 900px;
+      max-width: 900px; /* Esto está bien */
       margin: auto;
       padding: 0 1rem;
     }
-    @media(min-width: 768px) {
-      .container { grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 768px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr); /* Esto se aplica solo en pantallas grandes */
+      }
     }
     .card {
       background-color: var(--card-bg);
