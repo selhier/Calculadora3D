@@ -2,7 +2,7 @@
   "name": "Calculadora 3D",
   "short_name": "Calc3D",
   "description": "Calculadora de costos de impresión 3D y conversión de medidas.",
-  "start_url": "./index.html",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f9fafb",
